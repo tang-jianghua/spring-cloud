@@ -1,0 +1,36 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: eureka-service-provider
+  cloud:
+    config:
+      name: application-eureka-service-provider
+      label: master
+      profile: dev
+      discovery:
+        enabled: true
+        service-id: config-server
+#      uri: http://localhost:9000
+    bus:
+      trace:
+        enabled: true
+  rabbitmq:
+    host: 192.168.99.100
+    port: 5672
+    username: guest
+    password: guest
+  zipkin:
+    base-url: http://localhost:7000
+  sleuth:
+    sampler:
+      percentage: 1.0
+management:
+  security:
+    enabled: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.host:127.0.0.1}:${eureka.port:8000}/eureka/
+  instance:
+    prefer-ip-address: true

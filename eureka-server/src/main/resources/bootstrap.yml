@@ -1,0 +1,23 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: eureka-server-application
+#    cloud:
+#      config:
+#        name: application-eureka-server
+#        label: master
+#        profile: dev
+#        discovery:
+#          enabled: true
+#          service-id: config-server
+#        uri: http://localhost:9000
+eureka:
+  instance:
+    appname: eureka-server-appname
+    hostname: localhost
+  client:
+    register-with-eureka: false #表示是否注册Eureka服务器,因为自身作为服务注册中心，所以为false
+    fetch-registry: false #是否从eureka上获取注册信息
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

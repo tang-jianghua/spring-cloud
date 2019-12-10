@@ -1,0 +1,69 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: zuul-server
+  zipkin:
+    base-url: http://localhost:7000
+  sleuth:
+    sampler:
+      percentage: 1.0
+#  cloud:
+#    config:
+#      name: ${spring.application.name}
+#      label: master
+#      profile: dev
+#      discovery:
+#        enabled: true
+#        service-id: config-server
+##      uri: http://localhost:9000
+#    bus:
+#      trace:
+#        enabled: true
+#  rabbitmq:
+#    host: 192.168.99.100
+#    port: 5672
+#    username: guest
+#    password: guest
+#management:
+#  security:
+#    enabled: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.host:127.0.0.1}:${eureka.port:8000}/eureka/
+  instance:
+    prefer-ip-address: true
+
+zuul:
+  routes:
+    eureka-client:
+      path: /client/**
+      serviceId: eureka-client
+    eureka-service-provider:
+      path: /provider/**
+      serviceId: eureka-service-provider
+    auth-server:
+      path: /auth/**
+      serviceId: auth-server
+  retryable: true
+ribbon:
+  ReadTimeout: 60000
+  SocketTimeout: 60000
+  #对当前服务的重试次数
+  MaxAutoRetries: 3
+  #切换相同Server的次数
+  MaxAutoRetriesNextServer: 0
+
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      access-token-uri: http://localhost:7777/oauth/token #令牌端点
+      user-authorization-uri: http://localhost:7777/oauth/authorize #授权端点
+      client-id: zuul_server #OAuth2客户端ID
+      client-secret: secret #OAuth2客户端密钥
+    resource:
+      jwt:
+        key-value: springcloud123 #使用对称加密方式，默认算法为HS256
